@@ -33,10 +33,8 @@ st.set_page_config(page_title="Loan Approval Predictor", page_icon="🏦", layou
 @st.cache_resource
 def load_artifacts():
     models = {
-        "Decision Tree":     joblib.load(MODELS_DIR / "dt_pipeline.joblib"),
-        "SVM":               joblib.load(MODELS_DIR / "svm_pipeline.joblib"),
-        "Random Forest":     joblib.load(MODELS_DIR / "rf_pipeline.joblib"),
-        "Gradient Boosting": joblib.load(MODELS_DIR / "gb_pipeline.joblib"),
+        "Decision Tree": joblib.load(MODELS_DIR / "dt_pipeline.joblib"),
+        "SVM":           joblib.load(MODELS_DIR / "svm_pipeline.joblib"),
     }
     impute = joblib.load(MODELS_DIR / "impute_values.joblib")
     try:

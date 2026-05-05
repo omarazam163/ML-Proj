@@ -1,5 +1,5 @@
-"""Retrain Decision Tree, SVM, Random Forest, Gradient Boosting on the
-upgraded feature set and save the best pipelines.
+"""Retrain Decision Tree and SVM on the upgraded feature set and save the
+best pipelines.
 
 Run from project root::
 
@@ -23,7 +23,6 @@ from app.features import (  # noqa: E402
     NUMERIC_FEATURES,
 )
 from sklearn.compose import ColumnTransformer  # noqa: E402
-from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier  # noqa: E402
 from sklearn.metrics import (  # noqa: E402
     accuracy_score,
     f1_score,
@@ -123,40 +122,7 @@ def main() -> None:
         y_tr,
     )
 
-    print("\n[Random Forest] tuning...")
-    rf = tune(
-        "rf",
-        Pipeline(
-            [("prep", pre()), ("clf", RandomForestClassifier(random_state=RANDOM_STATE, n_jobs=-1))]
-        ),
-        {
-            "clf__n_estimators": [200, 400],
-            "clf__max_depth": [4, 6, 8, None],
-            "clf__min_samples_leaf": [1, 3, 5],
-            "clf__max_features": ["sqrt", "log2"],
-            "clf__class_weight": [None, "balanced"],
-        },
-        X_tr,
-        y_tr,
-    )
-
-    print("\n[Gradient Boosting] tuning...")
-    gb = tune(
-        "gb",
-        Pipeline(
-            [("prep", pre()), ("clf", GradientBoostingClassifier(random_state=RANDOM_STATE))]
-        ),
-        {
-            "clf__n_estimators": [100, 200, 300],
-            "clf__learning_rate": [0.03, 0.05, 0.1],
-            "clf__max_depth": [2, 3, 4],
-            "clf__subsample": [0.8, 1.0],
-        },
-        X_tr,
-        y_tr,
-    )
-
-    models = {"Decision Tree": dt, "SVM": svm, "Random Forest": rf, "Gradient Boosting": gb}
+    models = {"Decision Tree": dt, "SVM": svm}
 
     print("\n=== Default-threshold (0.5) test metrics ===")
     rows = []
@@ -186,11 +152,9 @@ def main() -> None:
     out.mkdir(exist_ok=True)
     joblib.dump(dt, out / "dt_pipeline.joblib")
     joblib.dump(svm, out / "svm_pipeline.joblib")
-    joblib.dump(rf, out / "rf_pipeline.joblib")
-    joblib.dump(gb, out / "gb_pipeline.joblib")
     joblib.dump(impute_values, out / "impute_values.joblib")
     joblib.dump(thresholds, out / "thresholds.joblib")
-    print(f"\nSaved 4 pipelines + impute_values + thresholds to {out}")
+    print(f"\nSaved 2 pipelines + impute_values + thresholds to {out}")
 
 
 if __name__ == "__main__":
