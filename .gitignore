@@ -1,0 +1,26 @@
+# Secrets / credentials
+kaggle.json
+.kaggle/
+*.key
+*.pem
+.env
+.env.*
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Data & models (often large; track via DVC/lfs instead)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+models/*.joblib
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
